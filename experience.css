@@ -1,0 +1,81 @@
+/* One continuous opening scene; native buttons remain above the art. */
+html{scroll-behavior:auto}
+#experience-3d{position:fixed;inset:0;width:100%;height:100%;z-index:8;pointer-events:none}
+#top,.screen-stack #top{position:relative;top:auto;height:270svh;min-height:1900px}
+#top .hero-stage{height:100svh;min-height:640px}
+#top::after,#product::after{display:none}
+.hero-instrument{pointer-events:none}
+.instrument-core{display:none}
+.hero-frame{animation:none;opacity:clamp(0,calc(1 - var(--flight,0) * 5),1);transform:translateY(calc(var(--flight,0) * 90px))}
+.hero-frame h1{font-size:clamp(28px,2.6vw,40px)}
+.hero-frame .eyebrow{display:none}
+.hero-watermark,.scroll-cue{opacity:clamp(0,calc(1 - var(--flight,0) * 5),1)}
+.hero-universe canvas{transform:scale(calc(1 + var(--flight,0) * .22))}
+.hero-progress{z-index:12}.hero-progress span{width:calc(var(--flight,0) * 100%)}
+#product{position:absolute;inset:0;height:100%;min-height:0;padding:0;background:transparent;opacity:var(--arrival,0);pointer-events:none;overflow:hidden;transform:none}
+#product.is-active{pointer-events:auto}
+#product .section-heading{position:absolute;top:14%;left:0;width:100%;opacity:1;transform:translateY(calc((1 - var(--arrival,0)) * 24px))}
+#product .section-heading h2{margin:17px 0 11px}
+.observatory{position:absolute;inset:0;perspective:1400px}
+.observatory-orbit{position:absolute;inset:0;width:100%;height:100%;stroke:#d9bd8040;fill:none;stroke-width:.65;opacity:.55;transition:opacity .8s}
+.observatory-orbit ellipse:nth-child(2){stroke-dasharray:2 9;opacity:.5}
+.observatory-orbit path{opacity:.18}
+.observatory.has-selection .observatory-orbit{opacity:.22}
+.celestial-item{position:absolute;left:var(--body-x);top:37%;width:27%;max-width:365px;transform:translateX(-50%);transition:left .9s cubic-bezier(.2,.75,.1,1),top .9s,width .9s;z-index:3}
+.celestial-choice{width:100%;display:block;background:none;border:0;padding:0;text-align:center}
+.celestial-anchor{display:block;position:relative;width:100%;height:31svh;min-height:180px;max-height:305px}
+.celestial-label{display:flex;flex-direction:column;align-items:center;gap:13px}
+.celestial-label i{font:italic 19px Georgia,serif;color:#d5bc8b;letter-spacing:.04em}
+.celestial-label strong{font:400 clamp(22px,2.1vw,30px) "Songti SC",serif;letter-spacing:.13em}
+.celestial-label small{font-size:11px;color:#939caf;line-height:1.8}
+.celestial-action{font-size:9px;letter-spacing:.12em;color:#bdac8b;padding-top:8px;transition:color .4s}
+.celestial-choice:hover .celestial-action{color:#ffe1a0}
+.celestial-choice:focus-visible{outline-offset:3px;border-radius:50% 50% 4px 4px}
+.observatory.has-selection .celestial-item{left:12%;top:22%;width:19%}
+.observatory.has-selection .celestial-item.is-secondary-right{left:85%}
+.observatory.has-selection .celestial-item.is-selected{left:40%;top:35%;width:32%;z-index:4}
+.observatory.has-selection .celestial-item:not(.is-selected) .celestial-anchor{height:24svh;min-height:145px}
+.observatory.has-selection .celestial-item:not(.is-selected) .celestial-label strong{font-size:21px}
+.observatory.has-selection .celestial-item:not(.is-selected) .celestial-label small{display:none}
+.observatory.has-selection .is-selected .celestial-label{opacity:0;pointer-events:none}
+.celestial-detail{position:absolute;left:62%;top:57%;width:25%;max-width:335px;padding:28px 0;border-top:1px solid #d8bb7c66;z-index:5}
+.celestial-detail[hidden]{display:none}
+.celestial-detail h3{font-size:31px;letter-spacing:.08em;margin:17px 0}
+.detail-copy{font-size:12px;line-height:2.3;color:#adb5c5}
+.detail-rule{display:block;margin-top:24px;width:35px;height:1px;background:#d4b67e88}
+.celestial-close{position:absolute;right:0;top:17px;font:22px Arial;background:none;border:0;color:#b5a584;padding:5px}
+.observatory-caption{position:absolute;bottom:6%;left:0;width:100%;text-align:center;color:#7d899c;font-size:9px;letter-spacing:.12em;pointer-events:none}
+.observatory-caption span{color:#c6a970;margin:0 20px}
+.planet-fallback{display:block;width:65%;aspect-ratio:1;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 30% 25%,#ffe7a5,#bc6d18 58%,#33261c);box-shadow:0 0 60px #b3882925;animation:celestialFloat 6s ease-in-out infinite}
+.planet-fallback.rising{clip-path:inset(0 0 40%);background:radial-gradient(circle at 40% 20%,#fff1c4,#d0a458 60%,#3b2d19)}
+.planet-fallback.moon{background:radial-gradient(circle at 20% 30%,#e9dcca,#6e7585 48%,#151b29 70%)}
+body[data-webgl=ready] .planet-fallback,body[data-webgl=ready] .relation-fallback{display:none}
+.glyph-anchor{position:absolute;inset:0;pointer-events:none}
+.wheel-zones .zodiac-zone:focus{outline:none}
+.wheel-zones .zodiac-zone:focus-visible{stroke:#e9c88e;stroke-width:1.5}
+.connection{display:block;min-height:max(900px,100svh);padding-top:160px;background:radial-gradient(ellipse at 50% 65%,#252b4055,transparent 70%),#090f1e}
+.connection .section-heading h2{font-size:clamp(30px,3vw,43px)}
+.relationship-worlds{display:flex;gap:18px;height:480px;max-width:1280px;margin:45px auto 0;perspective:1400px}
+.relationship-panel{position:relative;flex:1;min-width:0;overflow:hidden;text-align:left;padding:0;border:1px solid #c7af7d38;border-radius:5px;background:radial-gradient(ellipse at 50% 35%,#26334b55,transparent 70%),linear-gradient(140deg,#14203577,#090f1e);transition:flex .85s cubic-bezier(.2,.75,.1,1),transform .85s,border-color .7s,box-shadow .7s;transform-style:preserve-3d}
+.relationship-panel:hover{border-color:#d8bd7c77;box-shadow:0 0 36px #ccaa6420}
+.relation-number{position:absolute;top:24px;left:27px;font:italic 16px Georgia;color:#b9a277;z-index:2}
+.relationship-scene{position:absolute;top:35px;left:0;right:0;height:58%;display:block}
+.relation-fallback{position:absolute;left:50%;top:50%;translate:-50% -50%;font:120px Georgia;color:#c7ab75;text-shadow:0 0 40px #dbbf7d66;animation:coreBreath 5s infinite}
+.relation-1{letter-spacing:15px}.relation-2{border:1px solid #bc9c6155;border-radius:50%;padding:15px}
+.relation-copy{position:absolute;left:28px;right:28px;bottom:25px;display:flex;flex-direction:column;gap:12px}
+.relation-copy i{font:7px Arial;letter-spacing:.23em;color:#b5a27b;font-style:normal;line-height:1.7;white-space:nowrap}
+.relation-copy strong{font:400 27px "Songti SC",serif;letter-spacing:.1em;white-space:nowrap}
+.relation-summary{font-size:10px;line-height:1.9;color:#969fb0}
+.relation-detail{display:none;font-size:12px;line-height:2;color:#bec3ce}
+.relation-action{display:flex;justify-content:space-between;font-size:9px;color:#c8b58d;border-top:1px solid #cbb47b24;padding-top:15px;margin-top:4px}
+.relation-action b{font-weight:400;font-size:17px}
+.relationship-worlds.has-selection .relationship-panel{transform:rotateY(-7deg);border-color:#c6ab7033}
+.relationship-worlds.has-selection .relationship-panel:last-child{transform:rotateY(7deg)}
+.relationship-worlds.has-selection .relationship-panel.is-selected{flex:3;transform:rotateY(0);border-color:#d5b67c99;box-shadow:0 0 45px #c0a16412}
+.relationship-worlds.has-selection .relationship-panel:not(.is-selected) .relation-copy{left:18px;right:18px}
+.relationship-worlds.has-selection .relationship-panel:not(.is-selected) .relation-summary,.relationship-worlds.has-selection .relationship-panel:not(.is-selected) .relation-copy i{display:none}
+.relationship-worlds.has-selection .is-selected .relation-detail{display:block}
+.relationship-worlds.has-selection .is-selected .relation-summary{display:none}
+@media(max-height:780px) and (min-width:701px){#top .hero-stage{min-height:540px}.hero-frame{bottom:7%}#product .section-heading{top:15%}.celestial-item{top:38%}.celestial-anchor{height:28svh;min-height:140px}.celestial-label{gap:10px}.observatory-caption{bottom:4%}.connection{min-height:820px}.relationship-worlds{height:420px;margin-top:30px}}
+@media(max-width:1100px){.connection{padding-top:160px}.relationship-worlds{gap:12px}.relation-copy{left:22px;right:22px}.relation-copy i{font-size:6px;letter-spacing:.1em}.celestial-label small{font-size:10px}.celestial-detail h3{font-size:26px}.detail-copy{font-size:11px}.observatory.has-selection .celestial-item:not(.is-selected) .celestial-label strong{font-size:19px}}
+@media(max-width:700px){#top{height:280svh;min-height:2000px}#top .hero-stage{min-height:720px}.hero-frame{bottom:13%}#product .section-heading{top:18%;padding:0 20px}#product .section-heading h2{font-size:29px}.celestial-item{top:42%;width:32%;left:var(--body-x)}.celestial-anchor{height:22svh;min-height:155px}.celestial-label{gap:12px}.celestial-label i{font-size:14px}.celestial-label strong{font-size:20px}.celestial-label small{font-size:9px;padding:0 10px}.celestial-action{font-size:8px}.observatory-orbit{opacity:.3}.observatory-caption{bottom:6%;font-size:8px;padding:0 20px;line-height:2}.observatory-caption span{margin:0 8px}.observatory.has-selection .celestial-item{left:13%;top:34%;width:22%}.observatory.has-selection .celestial-item.is-secondary-right{left:87%}.observatory.has-selection .celestial-item.is-selected{left:46%;top:35%;width:38%}.observatory.has-selection .celestial-item:not(.is-selected) .celestial-anchor{min-height:110px;height:18svh}.observatory.has-selection .celestial-item:not(.is-selected) .celestial-label strong{font-size:16px}.observatory.has-selection .celestial-item:not(.is-selected) .celestial-label i{font-size:11px}.celestial-detail{left:23%;top:65%;width:62%;padding-top:19px}.celestial-detail h3{font-size:25px;margin:12px 0}.detail-copy{font-size:11px;line-height:2}.detail-rule{display:none}.observatory.has-selection~.observatory-caption{opacity:0}.connection{min-height:1200px;padding-top:140px}.relationship-worlds{flex-direction:column;height:850px;margin-top:30px;gap:14px}.relationship-panel{min-height:220px}.relationship-scene{top:0;left:0;right:48%;height:100%}.relation-number{left:18px;top:16px}.relation-copy{left:52%;right:20px;bottom:25%;gap:10px}.relation-copy strong{font-size:24px}.relation-copy i{font-size:6px;white-space:normal}.relation-summary{font-size:9px}.relation-action{font-size:8px}.relationship-worlds.has-selection .relationship-panel{transform:none;flex:1;min-height:160px}.relationship-worlds.has-selection .relationship-panel:last-child{transform:none}.relationship-worlds.has-selection .relationship-panel.is-selected{flex:2.1;transform:none}.relationship-worlds.has-selection .relationship-panel:not(.is-selected) .relation-copy{left:52%;right:20px;bottom:30%}.relationship-worlds.has-selection .is-selected .relation-copy{bottom:20%}.relation-detail{font-size:10px}}

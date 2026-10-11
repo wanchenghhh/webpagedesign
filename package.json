@@ -1,0 +1,12 @@
+{
+  "name": "zhunle-celestial-landing",
+  "version": "0.7.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild experience-scene.js --bundle --minify --format=esm --target=es2020 --outfile=experience-scene.min.js --legal-comments=eof"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+versions/
+design-proposals/
+screenshots/
+*.log
+.env
+.env.*
+!.env.example

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d1b">
+  <meta name="description" content="准了产品概念展示：从星盘出发，探索另一面的自己。">
+  <title>准了 · 遇见星空，读懂自己</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23080d1b'/%3E%3Cpath d='M32 7L38 26L57 32L38 38L32 57L26 38L7 32L26 26Z' fill='%23c4a776'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="experience.css?v=7">
+  <link rel="modulepreload" href="experience-scene.min.js?v=7">
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/ScrollTrigger.min.js" defer></script>
+  <script src="app.js?v=7" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <canvas id="experience-3d" aria-hidden="true"></canvas>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <canvas id="journey-field" aria-hidden="true"></canvas>
+  <canvas id="stardust-cursor" aria-hidden="true"></canvas>
+  <div class="page-glow" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="准了，返回首页"><span class="brand-symbol" aria-hidden="true">✧</span><span>准了<span class="brand-en">ZHUNLE</span></span></a>
+    <nav aria-label="页内导航">
+      <a href="#product">三个维度的你</a><a href="#zodiac">星座之轮</a><a href="#your-sky">点亮星图</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="immersive-hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-stage">
+        <div class="hero-universe" aria-hidden="true">
+          <canvas id="hero-stars"></canvas>
+          <div class="sky-nebula"></div>
+          <svg class="sky-constellations" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor" stroke-width=".7"><path d="M58 258 143 194 233 242 298 157 399 201 M1051 187 1151 253 1288 191 1362 281 M931 651 1015 607 1123 682 1205 616 1321 706 M91 607 197 689 277 645 346 711"/><path d="M0 460H1440M720 0V900" opacity=".18"/></g><g fill="currentColor"><circle cx="58" cy="258" r="2"/><circle cx="143" cy="194" r="3"/><circle cx="233" cy="242" r="2"/><circle cx="298" cy="157" r="2.5"/><circle cx="399" cy="201" r="2"/><circle cx="1051" cy="187" r="2.5"/><circle cx="1151" cy="253" r="2"/><circle cx="1288" cy="191" r="3"/><circle cx="1362" cy="281" r="2"/><circle cx="931" cy="651" r="2"/><circle cx="1015" cy="607" r="2.5"/><circle cx="1123" cy="682" r="2"/><circle cx="1205" cy="616" r="3"/><circle cx="1321" cy="706" r="2"/><circle cx="91" cy="607" r="2"/><circle cx="197" cy="689" r="2"/><circle cx="277" cy="645" r="3"/><circle cx="346" cy="711" r="2"/></g></svg>
+          <span class="sky-coordinate coordinate-left">☉ &nbsp; THE LIGHT WITHIN</span><span class="sky-coordinate coordinate-right">☽ &nbsp; THE WORLD YOU FEEL</span>
+          <svg class="sky-horizon" viewBox="0 0 1440 240" preserveAspectRatio="none"><path fill="#0d1828" d="M0 145 90 107 153 127 268 83 341 116 465 145 614 183 776 156 936 126 1062 80 1151 111 1225 67 1339 40 1440 0V240H0Z"/><path fill="#080e1b" d="M0 113 98 144 184 130 328 178 473 166 588 200 758 194 849 172 987 185 1155 146 1274 158 1380 124 1440 146V240H0Z"/></svg>
+        </div>
+        <div class="hero-instrument" data-renderer="loading">
+          <div class="instrument-fallback" aria-hidden="true"><svg viewBox="0 0 700 700" fill="none" stroke="currentColor"><circle cx="350" cy="350" r="270"/><circle cx="350" cy="350" r="254" stroke-dasharray="1 8"/><circle cx="350" cy="350" r="211"/><circle cx="350" cy="350" r="162"/><path d="M350 80V620M80 350H620M159 159L541 541M159 541L541 159" opacity=".35"/><path d="M350 270L368 332L430 350L368 368L350 430L332 368L270 350L332 332Z"/><g stroke="none" fill="currentColor" font-size="24" text-anchor="middle"><text x="350" y="113">♈︎</text><text x="473" y="146">♉︎</text><text x="562" y="236">♊︎</text><text x="595" y="359">♋︎</text><text x="562" y="482">♌︎</text><text x="473" y="572">♍︎</text><text x="350" y="605">♎︎</text><text x="227" y="572">♏︎</text><text x="138" y="482">♐︎</text><text x="105" y="359">♑︎</text><text x="138" y="236">♒︎</text><text x="227" y="146">♓︎</text></g></svg></div>
+          <button class="instrument-core" aria-label="唤醒星盘的光芒"><span aria-hidden="true">✦</span></button>
+        </div>
+        <div class="hero-frame">
+          <p class="eyebrow">A UNIVERSE, UNIQUELY YOURS</p>
+          <h1 id="hero-title">遇见星空，读懂<span class="gold-text">自己。</span></h1>
+          <a class="explore-link" href="#product"><span>开启你的宇宙</span><span class="round-arrow" aria-hidden="true">↗</span></a>
+        </div>
+        <a class="scroll-cue" href="#product"><span>向下滚动 · 进入你的宇宙</span><i aria-hidden="true"></i></a>
+        <span class="hero-watermark" aria-hidden="true">a universe, uniquely yours</span>
+        <section class="big-three section-shell" id="product" aria-labelledby="product-title">
+          <div class="section-heading"><p class="eyebrow">01 / THE ORBITAL OBSERVATORY</p><h2 id="product-title">你，不止<span class="gold-text">一个星座。</span></h2><p>让三个维度的自己，在同一个宇宙相遇。</p></div>
+          <div class="observatory">
+            <svg class="observatory-orbit" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="720" cy="450" rx="615" ry="158"/><ellipse cx="720" cy="450" rx="510" ry="112"/><path d="M110 450H1330"/><circle cx="150" cy="450" r="3"/><circle cx="1280" cy="450" r="3"/></svg>
+            <div class="celestial-item" data-body-item="0" style="--body-x:23%"><button class="celestial-choice" data-body="0" aria-expanded="false" aria-controls="celestial-detail"><span class="celestial-anchor" aria-hidden="true"><span class="planet-fallback rising"></span></span><span class="celestial-label"><i>Ascendant</i><strong>上升星座</strong><small>你与世界相遇的方式。</small><span class="celestial-action">探索这一面 ↗</span></span></button></div>
+            <div class="celestial-item" data-body-item="1" style="--body-x:50%"><button class="celestial-choice" data-body="1" aria-expanded="false" aria-controls="celestial-detail"><span class="celestial-anchor" aria-hidden="true"><span class="planet-fallback sun"></span></span><span class="celestial-label"><i>Sun</i><strong>太阳星座</strong><small>你想成为怎样的自己。</small><span class="celestial-action">探索这一面 ↗</span></span></button></div>
+            <div class="celestial-item" data-body-item="2" style="--body-x:77%"><button class="celestial-choice" data-body="2" aria-expanded="false" aria-controls="celestial-detail"><span class="celestial-anchor" aria-hidden="true"><span class="planet-fallback moon"></span></span><span class="celestial-label"><i>Moon</i><strong>月亮星座</strong><small>你的感受，和内心的归属。</small><span class="celestial-action">探索这一面 ↗</span></span></button></div>
+            <aside class="celestial-detail" id="celestial-detail" hidden><button class="celestial-close" aria-label="收起天体介绍">×</button><p class="eyebrow detail-en"></p><h3 class="detail-title"></h3><p class="detail-copy"></p><span class="detail-rule"></span></aside>
+          </div>
+          <p class="observatory-caption">沿着轨道，靠近另一面的自己 <span>✦</span> 点击天体，展开探索</p>
+        </section>
+        <div class="hero-progress" aria-hidden="true"><span></span></div>
+      </div>
+    </section>
+
+    <section class="zodiac-section section-shell" id="zodiac" aria-labelledby="zodiac-title">
+      <div class="zodiac-copy reveal"><p class="eyebrow">02 / THE ZODIAC AT A GLANCE</p><h2 id="zodiac-title">读懂星空，<br>也读懂<span class="gold-text">自己。</span></h2><p>十二个星座，十二种探索的起点。<br>触碰星座之轮，找到让你好奇的那一面。</p><a class="explore-link" href="#your-sky"><span>点亮你的星空</span><span class="round-arrow" aria-hidden="true">↗</span></a><div class="zodiac-note"><span class="hairline"></span><span>以星座为起点 · 以好奇为方向</span></div></div>
+      <div class="hero-art reveal" aria-label="十二星座互动星盘"><div id="hero-chart" class="astrolabe hero-astrolabe"><span class="glyph-anchor"></span></div><div class="wheel-selection" aria-live="polite"><div class="wheel-selection-name"><span class="sign-symbol" aria-hidden="true">♏︎</span><span class="sign-name">天蝎座</span></div><p class="sign-intro">专注深刻，习惯循着直觉探索内心深处。</p></div></div>
+      <aside class="birthday-panel reveal" id="your-sky" aria-labelledby="birthday-title">
+        <h3 id="birthday-title">点亮你的星图</h3>
+        <form id="birthday-form" novalidate><label class="sr-only" for="birthday">你的出生日期</label><div class="birthday-input-wrap"><input id="birthday" name="birthday" type="date" value="1998-11-03" min="1900-01-01" required aria-describedby="birthday-error"></div><button class="gold-button" type="submit"><span>点亮星图</span><span aria-hidden="true">↗</span></button><p class="form-error" id="birthday-error" role="alert"></p></form>
+        <div class="birthday-result" aria-live="polite"><span class="result-symbol" aria-hidden="true">♏︎</span><h3 class="result-name">天蝎座</h3></div>
+      </aside>
+    </section>
+
+    <section class="connection section-shell" id="connection" aria-labelledby="connection-title">
+      <div class="section-heading"><p class="eyebrow">03 / UNDER THE SAME SKY</p><h2 id="connection-title">每一种关系，都有<span class="gold-text">自己的宇宙。</span></h2><p>点击一扇窗口，看见不同形态的连接。</p></div>
+      <div class="relationship-worlds">
+        <button class="relationship-panel" data-relation="0" aria-expanded="false"><span class="relation-number">01</span><span class="relationship-scene" aria-hidden="true"><span class="relation-fallback relation-0">✧</span></span><span class="relation-copy"><i>TWO WORLDS, ONE ORBIT</i><strong>亲密关系</strong><span class="relation-summary">两束星光，交织成共同的轨道。</span><span class="relation-detail">关于表达，关于倾听，也关于两个人如何靠近。</span><span class="relation-action">展开这个宇宙 <b>↗</b></span></span></button>
+        <button class="relationship-panel" data-relation="1" aria-expanded="false"><span class="relation-number">02</span><span class="relationship-scene" aria-hidden="true"><span class="relation-fallback relation-1">✧</span></span><span class="relation-copy"><i>A CONSTELLATION OF US</i><strong>朋友相处</strong><span class="relation-summary">每一个不同的你，都是连接的一部分。</span><span class="relation-detail">相似让我们相遇，差异让相处更有意思。</span><span class="relation-action">展开这个宇宙 <b>↗</b></span></span></button>
+        <button class="relationship-panel" data-relation="2" aria-expanded="false"><span class="relation-number">03</span><span class="relationship-scene" aria-hidden="true"><span class="relation-fallback relation-2">✧</span></span><span class="relation-copy"><i>THE UNIVERSE WITHIN</i><strong>自我探索</strong><span class="relation-summary">向内展开，遇见自己的光。</span><span class="relation-detail">听听此刻的感受，给思考与成长留一点空间。</span><span class="relation-action">展开这个宇宙 <b>↗</b></span></span></button>
+      </div>
+    </section>
+
+    <section class="closing section-shell" id="within" aria-labelledby="closing-title"><p class="eyebrow reveal">STAY CURIOUS. LOOK WITHIN.</p><div class="closing-brand reveal"><span class="brand-letter">准</span><span class="closing-mark" aria-hidden="true"><canvas id="brand-stars"></canvas><span>✧</span></span><span class="brand-letter">了</span></div><h2 class="reveal" id="closing-title">宇宙很大。<br><span class="gold-text">你，也值得被探索。</span></h2><a class="back-top" href="#top">回到星空起点 <span aria-hidden="true">↑</span></a></section>
+  </main>
+  <footer class="site-footer"><span>准了 · ZHUNLE</span><span>产品概念展示 / 课程设计作品</span><span>WRITTEN IN YOUR STARS <span aria-hidden="true">✦</span></span></footer>
+</body>
+</html>
