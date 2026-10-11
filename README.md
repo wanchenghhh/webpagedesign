@@ -67,11 +67,15 @@ npm run build
 
 ## GitHub Pages
 
+仓库：[wanchenghhh/webpagedesign](https://github.com/wanchenghhh/webpagedesign)。默认 Pages 地址为 [wanchenghhh.github.io/webpagedesign](https://wanchenghhh.github.io/webpagedesign/)。
+
 所有资源使用相对路径，兼容 GitHub Pages 仓库子路径。发布文件已包含在仓库中，部署不需要重新构建。
 
 在仓库 **Settings → Pages** 中选择 **Deploy from a branch**，分支为 `main`，目录为 `/(root)`。保存后，GitHub Pages 会发布页面；后续推送到 `main` 会自动更新。根目录的 `.nojekyll` 保证静态文件直接发布。
 
 `versions/`、设计提案和本地截图不提交到 Git，保留在本地。历史发布版本通过 Git 提交记录回溯。
+
+`v0.7.0` 标记本次动效版本，可通过该 Git 标签查看或恢复当时的网页文件。
 
 发布新版本时更新资源 URL 的版本参数，避免旧缓存。首次访问仍需下载资源，后续复用浏览器 HTTP 缓存；没有注册 Service Worker，避免预览旧版本。
 
