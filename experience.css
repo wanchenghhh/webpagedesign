@@ -1,6 +1,7 @@
 /* One continuous opening scene; native buttons remain above the art. */
 html{scroll-behavior:auto}
-#experience-3d{position:fixed;inset:0;width:100%;height:100%;z-index:8;pointer-events:none}
+#experience-3d{position:fixed;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;opacity:0;transition:opacity .45s}
+body[data-webgl=ready] #experience-3d{opacity:1}
 #top,.screen-stack #top{position:relative;top:auto;height:270svh;min-height:1900px}
 #top .hero-stage{height:100svh;min-height:640px}
 #top::after,#product::after{display:none}

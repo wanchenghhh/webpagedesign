@@ -1,4 +1,5 @@
 import * as THREE from './vendor/three.module.js';
+import {createAstrolabe} from './astrolabe-model.js';
 
 // A single renderer shares a continuous camera scene and bounded chapter viewports.
 export function createExperience(canvas,{stage,anchors,glyphAnchor,relationSlots}) {
@@ -18,41 +19,12 @@ export function createExperience(canvas,{stage,anchors,glyphAnchor,relationSlots
   const pmrem=new THREE.PMREMGenerator(renderer),environment=pmrem.fromEquirectangular(env);
   opening.environment=environment.texture;env.dispose();pmrem.dispose();
   opening.add(new THREE.HemisphereLight(0xc5d5ef,0x413421,2));
-  const key=new THREE.DirectionalLight(0xffe4aa,3.3);key.position.set(-3,5,7);opening.add(key);
-  const rim=new THREE.DirectionalLight(0xb4ceef,2.4);rim.position.set(5,-2,4);opening.add(rim);
+  const key=new THREE.DirectionalLight(0xffe4aa,3.3);key.position.set(-4,5,9);key.intensity=5.2;opening.add(key);
+  const rim=new THREE.DirectionalLight(0xb4ceef,2.4);rim.position.set(5,-2,4);rim.intensity=3.2;opening.add(rim);
   const metal=new THREE.MeshStandardMaterial({color:0xbfa16a,metalness:.92,roughness:.28});
   const darkMetal=new THREE.MeshStandardMaterial({color:0x5b4c33,metalness:.9,roughness:.42,side:THREE.DoubleSide});
   const fineGold=new THREE.LineBasicMaterial({color:0xcfb479,transparent:true,opacity:.5});
-  const wheel=new THREE.Group();opening.add(wheel);wheel.rotation.set(.24,-.13,.03);
-  const rings=[];
   function circle(radius,z,opacity=.7){const pts=Array.from({length:193},(_,i)=>new THREE.Vector3(Math.sin(i*Math.PI/96)*radius,Math.cos(i*Math.PI/96)*radius,z));const material=fineGold.clone();material.opacity=opacity;return new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),material);}
-  function ring(radius,band,z,segments){
-    const group=new THREE.Group();group.position.z=z;wheel.add(group);
-    const shape=new THREE.Shape();shape.absarc(0,0,radius,0,Math.PI*2,false);
-    const hole=new THREE.Path();hole.absarc(0,0,radius-band,0,Math.PI*2,true);shape.holes.push(hole);
-    const geometry=new THREE.ExtrudeGeometry(shape,{depth:.055,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.012,bevelThickness:.012,curveSegments:96});
-    const mesh=new THREE.Mesh(geometry,darkMetal);group.add(mesh);
-    [radius,radius-band].forEach(r=>{const edge=new THREE.Mesh(new THREE.TorusGeometry(r,.017,6,160),metal);edge.position.z=.06;group.add(edge);});
-    group.add(circle(radius-band*.28,.074,.65),circle(radius-band*.73,.074,.3));
-    const ticks=new THREE.InstancedMesh(new THREE.BoxGeometry(.009,.08,.012),metal,segments);
-    const dummy=new THREE.Object3D();
-    for(let i=0;i<segments;i++){const a=i/segments*Math.PI*2,r=radius-.08;dummy.position.set(Math.sin(a)*r,Math.cos(a)*r,.08);dummy.rotation.z=-a;dummy.scale.y=i%8===0?1.6:i%2===0?1:.5;dummy.updateMatrix();ticks.setMatrixAt(i,dummy.matrix);}
-    group.add(ticks);rings.push(group);return group;
-  }
-  const outer=ring(3.12,.42,5,144),middle=ring(2.49,.17,2,96),inner=ring(1.85,.16,-.5,72);
-  const labelCanvas=document.createElement('canvas');labelCanvas.width=labelCanvas.height=2048;
-  const labelBrush=labelCanvas.getContext('2d'),glyphs=['♈︎','♉︎','♊︎','♋︎','♌︎','♍︎','♎︎','♏︎','♐︎','♑︎','♒︎','♓︎'];
-  const names=['ARIES','TAURUS','GEMINI','CANCER','LEO','VIRGO','LIBRA','SCORPIO','SAGITTARIUS','CAPRICORN','AQUARIUS','PISCES'];
-  labelBrush.fillStyle='#dbc38c';labelBrush.strokeStyle='#c9ae7555';labelBrush.lineWidth=1.3;labelBrush.textAlign='center';labelBrush.textBaseline='middle';
-  for(let i=0;i<12;i++){
-    const a=(i+.5)*Math.PI/6,r=895;
-    labelBrush.save();labelBrush.translate(1024+Math.sin(a)*r,1024-Math.cos(a)*r);labelBrush.rotate(a);labelBrush.font='44px Georgia, serif';labelBrush.fillText(glyphs[i],0,-13);labelBrush.font='13px Arial';labelBrush.fillText(names[i],0,22);labelBrush.restore();
-    const b=i*Math.PI/6;labelBrush.beginPath();labelBrush.moveTo(1024+Math.sin(b)*843,1024-Math.cos(b)*843);labelBrush.lineTo(1024+Math.sin(b)*963,1024-Math.cos(b)*963);labelBrush.stroke();
-  }
-  const labelTexture=new THREE.CanvasTexture(labelCanvas);labelTexture.colorSpace=THREE.SRGBColorSpace;labelTexture.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),4);
-  const labels=new THREE.Mesh(new THREE.PlaneGeometry(6.55,6.55),new THREE.MeshBasicMaterial({map:labelTexture,transparent:true,depthWrite:false,opacity:.95}));labels.position.z=.087;outer.add(labels);
-
-  wheel.position.y=1.12;
   const radialCanvas=document.createElement('canvas');radialCanvas.width=radialCanvas.height=128;
   const rc=radialCanvas.getContext('2d'),rg=rc.createRadialGradient(64,64,0,64,64,64);
   rg.addColorStop(0,'#fff9df');rg.addColorStop(.07,'#ffefbd');rg.addColorStop(.2,'#e9c57e80');rg.addColorStop(.6,'#b18d3a10');rg.addColorStop(1,'#98732900');rc.fillStyle=rg;rc.fillRect(0,0,128,128);
@@ -64,6 +36,8 @@ export function createExperience(canvas,{stage,anchors,glyphAnchor,relationSlots
   function orb(radius,color=0xffd891){return new THREE.Mesh(new THREE.SphereGeometry(radius,32,24),new THREE.MeshStandardMaterial({color,metalness:.65,roughness:.3}));}
   function trace(points,opacity=.6,color=0xd6b478){return new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color,transparent:true,opacity}));}
   function curve(fn,count=160){return Array.from({length:count+1},(_,i)=>fn(i/count*Math.PI*2));}
+  const astrolabe=createAstrolabe({glowTexture});opening.add(astrolabe.group);
+  canvas.dataset.model='procedural-astrolabe';canvas.dataset.modelTriangles=String(astrolabe.stats.triangles);canvas.dataset.modelParts=String(astrolabe.stats.meshes);
   const planetGroups=[],planetParts=[];
   const solarMaterial=new THREE.ShaderMaterial({
     uniforms:{uTime:{value:0},uTint:{value:new THREE.Color(0xffcd68)}},
@@ -99,9 +73,9 @@ export function createExperience(canvas,{stage,anchors,glyphAnchor,relationSlots
   const moonOrbit=circle(1.73,0,.35);moonOrbit.rotation.set(.4,-.55,.2);moonGroup.add(moonOrbit);
   const moonStar=halo(.65,0xe3eeff,.8);moonStar.position.set(1.38,-.83,.2);moonGroup.add(moonStar);
   [risingGroup,sunGroup,moonGroup].forEach((group,i)=>{group.position.set((i-1)*4.1,0,-20);opening.add(group);planetGroups.push(group);planetParts.push({scale:1,hover:0});});
-  const tunnelPts=new Float32Array(180*6);
-  for(let i=0;i<180;i++){const a=i*2.39996,r=3.5+random()*9,z=14-random()*38;tunnelPts.set([Math.sin(a)*r,Math.cos(a)*r,z,Math.sin(a)*r,Math.cos(a)*r,z-.45-random()*1.1],i*6);}
-  const tunnel=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(tunnelPts,3)),new THREE.LineBasicMaterial({color:0xf7dda0,transparent:true,opacity:0}));opening.add(tunnel);
+  const tunnelCount=220,tunnelPts=new Float32Array(tunnelCount*6),tunnelLengths=new Float32Array(tunnelCount),tunnelColors=new Float32Array(tunnelCount*6);
+  for(let i=0;i<tunnelCount;i++){const a=i*2.39996,r=2.6+random()*9,z=14-random()*38,length=.5+random()*1.2,color=new THREE.Color(i%3?0x91b6de:0xf2d49a);tunnelLengths[i]=length;tunnelPts.set([Math.sin(a)*r,Math.cos(a)*r,z,Math.sin(a)*r,Math.cos(a)*r,z-length],i*6);tunnelColors.set([color.r,color.g,color.b,color.r,color.g,color.b],i*6);}
+  const tunnel=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(tunnelPts,3)).setAttribute('color',new THREE.BufferAttribute(tunnelColors,3)),new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0}));opening.add(tunnel);
   // Zodiac glyph targets are rasterized once on demand, then reused by a fixed pool.
   const glyphScene=new THREE.Scene(),glyphCamera=new THREE.PerspectiveCamera(38,1,.1,30);glyphCamera.position.z=6;
   const glyphGroup=new THREE.Group();glyphScene.add(glyphGroup);
@@ -169,24 +143,28 @@ export function createExperience(canvas,{stage,anchors,glyphAnchor,relationSlots
     const stageRect=stage.getBoundingClientRect();
     if(stageRect.bottom>0&&stageRect.top<screenHeight){
       active=true;camera.aspect=stageRect.width/stageRect.height;camera.updateProjectionMatrix();
-      const travel=smooth(flight);camera.position.set(pointer.x*.035*(1-flight),1.12*Math.sin(Math.min(travel/.8,1)*Math.PI),18.6-24.6*travel);camera.lookAt(0,camera.position.y,-30);
-      wheel.rotation.x=(.24+pointer.y*.08)*(1-smooth(flight/.5));wheel.rotation.y=(-.13+pointer.x*.12)*(1-smooth(flight/.5));
-      const assembled=smooth((now-introStart)/1800);
-      rings.forEach((ring,i)=>{ring.rotation.z=now*.00001*[1,-1.7,1.4][i]+(1-assembled)*(i+1)*-.6;ring.scale.setScalar(.05+assembled*.95);});
+      const travel=smooth(flight),startZ=Math.max(17.8,12.1/camera.aspect);
+      camera.position.set(pointer.x*.035*(1-flight),0,THREE.MathUtils.lerp(startZ,-6,travel));camera.lookAt(0,0,-30);
+      astrolabe.update({time:(now-introStart)/1000,flight,pointer});
+      astrolabe.group.scale.setScalar(.96+smooth((now-introStart)/1400)*.04);
       const arrival=smooth((flight-.72)/.28),viewHeight=2*(20+camera.position.z)*Math.tan(21*Math.PI/180),viewWidth=viewHeight*camera.aspect;
       planetGroups.forEach((group,i)=>{
         const rect=anchors[i].getBoundingClientRect(),x=((rect.left+rect.width/2-stageRect.left)/stageRect.width-.5)*viewWidth,y=(.5-(rect.top+rect.height/2-stageRect.top)/stageRect.height)*viewHeight;
         group.position.x=THREE.MathUtils.lerp((i-1)*3.5,x,arrival);group.position.y=THREE.MathUtils.lerp(0,y,arrival);
         const desired=rect.height/stageRect.height*viewHeight/4.0*(i===selectedBody?1.05:1);
         const part=planetParts[i];part.scale+=(desired-part.scale)*Math.min(1,dt*7);part.hover+=((i===hoveredBody?1:0)-part.hover)*Math.min(1,dt*8);
-        group.scale.setScalar(THREE.MathUtils.lerp(1,part.scale,arrival)*(1+part.hover*.065));group.rotation.y=Math.sin(now*.00012+i)*.1+pointer.x*.06*arrival;
-        group.position.y+=Math.sin(now*.0008+i*2)*.07*arrival;group.visible=flight>.30;
+        const reveal=smooth((flight-.48)/.21);
+        group.scale.setScalar(THREE.MathUtils.lerp(1,part.scale,arrival)*(1+part.hover*.065)*reveal);group.rotation.y=Math.sin(now*.00012+i)*.1+pointer.x*.06*arrival;
+        group.position.y+=Math.sin(now*.0008+i*2)*.07*arrival;group.visible=reveal>0;
       });
       solarMaterial.uniforms.uTime.value=now*.001;sun.rotation.y=now*.000045;
       corona.forEach((c,i)=>{const p=(now*.00016+i/3)%1;c.scale.setScalar(1+p*.45);c.material.opacity=(1-p)*.24;});
       moon.rotation.y=now*.000025;
       horizon.rotation.x=.3+Math.sin(now*.0006)*.12;
-      tunnel.material.opacity=Math.sin(clamp((flight-.1)/.85)*Math.PI)*.65;
+      const streak=Math.sin(clamp((flight-.1)/.85)*Math.PI);
+      tunnel.material.opacity=streak*.7;
+      for(let i=0;i<tunnelCount;i++)tunnelPts[i*6+5]=tunnelPts[i*6+2]-tunnelLengths[i]*(1+streak*4);
+      tunnel.geometry.attributes.position.needsUpdate=true;
       viewport(stageRect,opening,camera);
     }
     const elapsed=(now-glyphStart)/1000;
@@ -219,9 +197,9 @@ export function createExperience(canvas,{stage,anchors,glyphAnchor,relationSlots
     if(now-measure>1500){canvas.dataset.fps=String(Math.round(frames*1000/(now-measure)));frames=0;measure=now;}
     if(active)frame=requestAnimationFrame(draw);else last=0;
   }
-  function wake(){if(!frame&&!document.hidden){last=0;frame=requestAnimationFrame(draw);}}
+  function wake(){if(!frame&&!document.hidden){last=0;frames=0;measure=performance.now();frame=requestAnimationFrame(draw);}}
   canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(frame);frame=0;document.body.dataset.webgl='fallback';document.querySelector('.hero-instrument').classList.remove('is-ready');canvas.dataset.webgl='lost';});
   document.addEventListener('visibilitychange',()=>{cancelAnimationFrame(frame);frame=0;if(!document.hidden)wake();});
   resize();canvas.dataset.webgl='ready';document.body.dataset.webgl='ready';
-  return{resize,wake,awaken,setFlight(p){flight=clamp(p);canvas.dataset.flight=flight.toFixed(3);wake();},setBody(i){selectedBody=i;wake();},setHover(i){hoveredBody=i;wake();},setRelation(i){selectedRelation=i;wake();},setPointer(x,y){pointer={x,y};wake();},dispose(){cancelAnimationFrame(frame);[opening,glyphScene,...relations.map(r=>r.scene)].forEach(s=>s.traverse(o=>{o.geometry?.dispose();if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());}));environment.dispose();moonTexture.dispose();labelTexture.dispose();glowTexture.dispose();renderer.dispose();}};
+  return{resize,wake,awaken,setFlight(p){flight=clamp(p);canvas.dataset.flight=flight.toFixed(3);wake();},setBody(i){selectedBody=i;wake();},setHover(i){hoveredBody=i;wake();},setRelation(i){selectedRelation=i;wake();},setPointer(x,y){pointer={x,y};wake();},dispose(){cancelAnimationFrame(frame);[opening,glyphScene,...relations.map(r=>r.scene)].forEach(s=>s.traverse(o=>{o.geometry?.dispose();if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());}));environment.dispose();moonTexture.dispose();astrolabe.dispose();glowTexture.dispose();renderer.dispose();}};
 }

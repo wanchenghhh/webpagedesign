@@ -272,7 +272,7 @@
     brandParticles.forEach(star=>{const x=w*(.5+star.sx*(1-p)+star.x*.55*p),y=h*(.5+star.sy*(1-p)+star.y*.55*p);brandBrush.globalAlpha=(.35+(Math.sin(time*1.5+star.phase)+1)*.25)*(1-p*.5);brandBrush.beginPath();brandBrush.arc(x,y,star.phase%3*.18+.65,0,Math.PI*2);brandBrush.fill();});brandBrush.globalAlpha=1;
   });
   const instrument=document.querySelector('.hero-instrument');
-  import('./experience-scene.min.js?v=7').then(({createExperience})=>{
+  import('./experience-scene.min.js?v=8').then(({createExperience})=>{
     try{
       experience=createExperience(document.querySelector('#experience-3d'),{stage:document.querySelector('.hero-stage'),anchors:[...document.querySelectorAll('.celestial-anchor')],glyphAnchor:document.querySelector('.glyph-anchor'),relationSlots:[...document.querySelectorAll('.relationship-scene')]});
       instrument.classList.add('is-ready');instrument.dataset.renderer='webgl';syncMotion();
